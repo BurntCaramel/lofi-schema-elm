@@ -7,6 +7,7 @@ import Lofi.Parse exposing (parseElement)
 import Lofi.Schema exposing (Schema, fromElement)
 import Lofi.Schema.Output.MySQL as MySQL
 import Lofi.Schema.Output.Mongoose as Mongoose
+import Lofi.Schema.Output.Joi as Joi
 
 
 type alias Model =
@@ -126,7 +127,7 @@ view model =
       ]
     , div []
       [ h2 [] [ text "Joi" ]
-      , viewCode (MySQL.createTableCommand schema)
+      , viewCode (Joi.createSchemaCode schema)
       ]
     ]
 

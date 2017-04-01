@@ -10728,6 +10728,115 @@ var _user$project$Lofi_Schema$addElements = F2(
 				items: A2(_elm_lang$core$Basics_ops['++'], schema.items, items)
 			});
 	});
+var _user$project$Lofi_Schema_Output_Joi$createSchemaCodeFold = F2(
+	function (item, list) {
+		var priority = item.isPrimaryKey ? 2 : 1;
+		var requiredString = item.optional ? _elm_lang$core$Maybe$Just('.optional()') : _elm_lang$core$Maybe$Just('.required()');
+		var propertyName = _elm_community$string_extra$String_Extra$underscored(item.name);
+		var nativeKind = function () {
+			var _p0 = item.kind;
+			switch (_p0.ctor) {
+				case 'Text':
+					return 'Joi.string()';
+				case 'Number':
+					return 'Joi.number()';
+				default:
+					return 'Joi.date()';
+			}
+		}();
+		var schemaString = A2(
+			_elm_lang$core$String$join,
+			'',
+			A2(
+				_elm_lang$core$List$filterMap,
+				_elm_lang$core$Basics$identity,
+				{
+					ctor: '::',
+					_0: _elm_lang$core$Maybe$Just(nativeKind),
+					_1: {
+						ctor: '::',
+						_0: requiredString,
+						_1: {ctor: '[]'}
+					}
+				}));
+		var field = {ctor: '_Tuple2', _0: propertyName, _1: schemaString};
+		return {
+			ctor: '::',
+			_0: {ctor: '_Tuple2', _0: priority, _1: field},
+			_1: list
+		};
+	});
+var _user$project$Lofi_Schema_Output_Joi$pairsToJSObject = F2(
+	function (multilined, pairs) {
+		var wrapInBraces = multilined ? function (s) {
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				'{\n  ',
+				A2(_elm_lang$core$Basics_ops['++'], s, '\n}'));
+		} : function (s) {
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				'{ ',
+				A2(_elm_lang$core$Basics_ops['++'], s, ' }'));
+		};
+		var propertyDivider = multilined ? ',\n  ' : ', ';
+		return wrapInBraces(
+			A2(
+				_elm_lang$core$String$join,
+				propertyDivider,
+				A2(
+					_elm_lang$core$List$map,
+					function (_p1) {
+						var _p2 = _p1;
+						return A2(
+							_elm_lang$core$Basics_ops['++'],
+							_p2._0,
+							A2(_elm_lang$core$Basics_ops['++'], ': ', _p2._1));
+					},
+					pairs)));
+	});
+var _user$project$Lofi_Schema_Output_Joi$lowerCamelCase = function (input) {
+	var _p3 = _elm_lang$core$String$uncons(
+		_elm_community$string_extra$String_Extra$camelize(input));
+	if (_p3.ctor === 'Just') {
+		return A2(
+			_elm_lang$core$String$cons,
+			_elm_lang$core$Char$toLower(_p3._0._0),
+			_p3._0._1);
+	} else {
+		return '';
+	}
+};
+var _user$project$Lofi_Schema_Output_Joi$createSchemaCode = function (schema) {
+	var fields = A2(
+		_user$project$Lofi_Schema_Output_Joi$pairsToJSObject,
+		true,
+		A2(
+			_elm_lang$core$List$map,
+			_elm_lang$core$Tuple$second,
+			A2(
+				_elm_lang$core$List$sortBy,
+				_elm_lang$core$Tuple$first,
+				A3(
+					_elm_lang$core$List$foldr,
+					_user$project$Lofi_Schema_Output_Joi$createSchemaCodeFold,
+					{ctor: '[]'},
+					schema.items))));
+	var constantName = _user$project$Lofi_Schema_Output_Joi$lowerCamelCase(schema.collectionName);
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		'const ',
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			constantName,
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				' = ',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'Joi.object(',
+					A2(_elm_lang$core$Basics_ops['++'], fields, ');')))));
+};
 var _user$project$Lofi_Schema_Output_Mongoose$pairsToJSObject = F2(
 	function (multilined, pairs) {
 		var wrapInBraces = multilined ? function (s) {
@@ -10757,7 +10866,7 @@ var _user$project$Lofi_Schema_Output_Mongoose$pairsToJSObject = F2(
 					},
 					pairs)));
 	});
-var _user$project$Lofi_Schema_Output_Mongoose$createTableCommandFold = F2(
+var _user$project$Lofi_Schema_Output_Mongoose$createModelCodeFold = F2(
 	function (item, list) {
 		var priority = item.isPrimaryKey ? 2 : 1;
 		var defaultString = function () {
@@ -10868,19 +10977,30 @@ var _user$project$Lofi_Schema_Output_Mongoose$createModelCode = function (schema
 				_elm_lang$core$Tuple$first,
 				A3(
 					_elm_lang$core$List$foldr,
-					_user$project$Lofi_Schema_Output_Mongoose$createTableCommandFold,
+					_user$project$Lofi_Schema_Output_Mongoose$createModelCodeFold,
 					{ctor: '[]'},
 					schema.items))));
+	var constantName = _user$project$Lofi_Schema_Output_Mongoose$lowerCamelCase(
+		A2(_elm_lang$core$Basics_ops['++'], schema.collectionName, '_schema'));
 	return A2(
 		_elm_lang$core$Basics_ops['++'],
-		'new mongoose.Schema(',
+		'const ',
 		A2(
 			_elm_lang$core$Basics_ops['++'],
-			fields,
+			constantName,
 			A2(
 				_elm_lang$core$Basics_ops['++'],
-				', ',
-				A2(_elm_lang$core$Basics_ops['++'], schemaOptions, ');'))));
+				' = ',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'new mongoose.Schema(',
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						fields,
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							', ',
+							A2(_elm_lang$core$Basics_ops['++'], schemaOptions, ');')))))));
 };
 var _user$project$Lofi_Schema_Output_MySQL$insertRowCommand = function (schema) {
 	var tableName = _elm_community$string_extra$String_Extra$underscored(schema.collectionName);
@@ -11333,7 +11453,7 @@ var _user$project$LofiSchemaExampleHardCoded$view = function (model) {
 										_1: {
 											ctor: '::',
 											_0: _user$project$LofiSchemaExampleHardCoded$viewCode(
-												_user$project$Lofi_Schema_Output_MySQL$createTableCommand(schema)),
+												_user$project$Lofi_Schema_Output_Joi$createSchemaCode(schema)),
 											_1: {ctor: '[]'}
 										}
 									}),

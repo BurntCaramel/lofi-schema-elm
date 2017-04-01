@@ -1,11 +1,11 @@
-module Lofi.Schema.Output.Mongoose exposing
-  ( createModelCode
+module Lofi.Schema.Output.Joi exposing
+  ( createSchemaCode
   )
 
 {-|
 
 # Functions
-@docs createModelCode
+@docs createSchemaCode
 -}
 
 import Lofi.Schema exposing (Schema, Item, Kind(..))
@@ -42,46 +42,33 @@ pairsToJSObject multilined pairs =
     |> String.join propertyDivider
     |> wrapInBraces
 
-createModelCodeFold : Item -> List (Int, (String, String)) -> List (Int, (String, String))
-createModelCodeFold item list =
+createSchemaCodeFold : Item -> List (Int, (String, String)) -> List (Int, (String, String))
+createSchemaCodeFold item list =
   let
     nativeKind =
       case item.kind of
         Text { maximumLength } ->
-          "String"
+          "Joi.string()"
         Number { real, allowNegative } ->
-          "Number"
+          "Joi.number()"
         Date { time } ->
-          "Date"
+          "Joi.date()"
     
     propertyName =
       underscored item.name
 
     requiredString =
       if item.optional then
-        Nothing
+        Just ".optional()"
       else
-        Just ("required", "true")
-    
-    defaultString =
-      case item.kind of
-        Text { default } ->
-          Maybe.map (\default -> ("default", (quote default))) default
-        Number { default } ->
-          Maybe.map (\default -> ("default,", (toString default))) default
-        Date { time, defaultIsNow } ->
-          if time && defaultIsNow then
-            Just ("default", "Date.now")
-          else
-            Nothing
+        Just ".required()"
     
     schemaString =
-      [ Just ("type", nativeKind)
-      , defaultString
+      [ Just nativeKind
       , requiredString
       ]
       |> List.filterMap identity
-      |> pairsToJSObject False
+      |> String.join ""
 
     field =
       (propertyName, schemaString)
@@ -95,24 +82,19 @@ createModelCodeFold item list =
   in
     ( priority, field ) :: list
 
-{-| Generates JavaScript code creating a mongoose.Schema -}
-createModelCode : Schema -> String
-createModelCode schema =
+{-| Generates JavaScript code creating a Joi schema -}
+createSchemaCode : Schema -> String
+createSchemaCode schema =
   let
     constantName =
-      schema.collectionName ++ "_schema"
+      schema.collectionName
       |> lowerCamelCase
 
     fields =
-      List.foldr createModelCodeFold [] schema.items
+      List.foldr createSchemaCodeFold [] schema.items
       |> List.sortBy Tuple.first
       |> List.map Tuple.second
       |> pairsToJSObject True
-    
-    schemaOptions =
-      pairsToJSObject True
-        [ ("collection", schema.collectionName |> lowerCamelCase |> quote )
-        ]
   in
     "const " ++ constantName ++ " = " ++
-    "new mongoose.Schema(" ++ fields ++ ", " ++ schemaOptions ++");"
+    "Joi.object(" ++ fields ++ ");"

@@ -9,7 +9,8 @@
     "exposed-modules": [
         "Lofi.Schema",
         "Lofi.Schema.Output.MySQL",
-        "Lofi.Schema.Output.Mongoose"
+        "Lofi.Schema.Output.Mongoose",
+        "Lofi.Schema.Output.Joi"
     ],
     "dependencies": {
         "RoyalIcing/lofi-elm": "3.0.0 <= v < 4.0.0",
