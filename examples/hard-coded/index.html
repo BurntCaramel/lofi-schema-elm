@@ -10881,7 +10881,7 @@ var _user$project$Lofi_Schema_Output_Mongoose$pairsToJSObject = F2(
 var _user$project$Lofi_Schema_Output_Mongoose$createModelCodeFold = F2(
 	function (item, list) {
 		var priority = item.isPrimaryKey ? 2 : 1;
-		var defaultString = function () {
+		var defaultPair = function () {
 			var _p2 = item.kind;
 			switch (_p2.ctor) {
 				case 'Text':
@@ -10911,18 +10911,46 @@ var _user$project$Lofi_Schema_Output_Mongoose$createModelCodeFold = F2(
 						{ctor: '_Tuple2', _0: 'default', _1: 'Date.now'}) : _elm_lang$core$Maybe$Nothing;
 			}
 		}();
-		var requiredString = item.optional ? _elm_lang$core$Maybe$Nothing : _elm_lang$core$Maybe$Just(
+		var requiredPair = item.optional ? _elm_lang$core$Maybe$Nothing : _elm_lang$core$Maybe$Just(
 			{ctor: '_Tuple2', _0: 'required', _1: 'true'});
 		var propertyName = _elm_community$string_extra$String_Extra$underscored(item.name);
-		var nativeKind = function () {
+		var base = function () {
 			var _p3 = item.kind;
 			switch (_p3.ctor) {
 				case 'Text':
-					return 'String';
+					return {
+						ctor: '::',
+						_0: _elm_lang$core$Maybe$Just(
+							{ctor: '_Tuple2', _0: 'type', _1: 'String'}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$core$Maybe$map,
+								function (n) {
+									return {
+										ctor: '_Tuple2',
+										_0: 'maxlength',
+										_1: _elm_lang$core$Basics$toString(n)
+									};
+								},
+								_p3._0.maximumLength),
+							_1: {ctor: '[]'}
+						}
+					};
 				case 'Number':
-					return 'Number';
+					return {
+						ctor: '::',
+						_0: _elm_lang$core$Maybe$Just(
+							{ctor: '_Tuple2', _0: 'type', _1: 'Number'}),
+						_1: {ctor: '[]'}
+					};
 				default:
-					return 'Date';
+					return {
+						ctor: '::',
+						_0: _elm_lang$core$Maybe$Just(
+							{ctor: '_Tuple2', _0: 'type', _1: 'Date'}),
+						_1: {ctor: '[]'}
+					};
 			}
 		}();
 		var schemaString = A2(
@@ -10931,20 +10959,18 @@ var _user$project$Lofi_Schema_Output_Mongoose$createModelCodeFold = F2(
 			A2(
 				_elm_lang$core$List$filterMap,
 				_elm_lang$core$Basics$identity,
-				{
-					ctor: '::',
-					_0: _elm_lang$core$Maybe$Just(
-						{ctor: '_Tuple2', _0: 'type', _1: nativeKind}),
-					_1: {
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					base,
+					{
 						ctor: '::',
-						_0: defaultString,
+						_0: defaultPair,
 						_1: {
 							ctor: '::',
-							_0: requiredString,
+							_0: requiredPair,
 							_1: {ctor: '[]'}
 						}
-					}
-				}));
+					})));
 		var field = {ctor: '_Tuple2', _0: propertyName, _1: schemaString};
 		return {
 			ctor: '::',

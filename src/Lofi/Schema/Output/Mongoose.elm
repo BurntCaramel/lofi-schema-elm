@@ -45,25 +45,25 @@ pairsToJSObject multilined pairs =
 createModelCodeFold : Item -> List (Int, (String, String)) -> List (Int, (String, String))
 createModelCodeFold item list =
   let
-    nativeKind =
+    base =
       case item.kind of
         Text { maximumLength } ->
-          "String"
+          [ Just ("type", "String"), Maybe.map (\n -> ("maxlength", toString n)) maximumLength ]
         Number { real, allowNegative } ->
-          "Number"
+          [ Just ("type", "Number") ]
         Date { time } ->
-          "Date"
+          [ Just ("type", "Date") ]
     
     propertyName =
       underscored item.name
 
-    requiredString =
+    requiredPair =
       if item.optional then
         Nothing
       else
         Just ("required", "true")
     
-    defaultString =
+    defaultPair =
       case item.kind of
         Text { default } ->
           Maybe.map (\default -> ("default", (quote default))) default
@@ -76,10 +76,7 @@ createModelCodeFold item list =
             Nothing
     
     schemaString =
-      [ Just ("type", nativeKind)
-      , defaultString
-      , requiredString
-      ]
+      base ++ [ defaultPair, requiredPair ]
       |> List.filterMap identity
       |> pairsToJSObject False
 
