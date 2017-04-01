@@ -1,9 +1,9 @@
 module.exports = {
   type: 'web-app',
+  polyfill: false,
   webpack: {
     extra: {
       module: {
-        //noParse: [/.elm$/],
         rules: [{
           test:    /\.elm$/,
           exclude: [/elm-stuff/, /node_modules/],
