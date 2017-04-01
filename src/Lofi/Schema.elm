@@ -19,9 +19,20 @@ import Dict exposing (Dict)
 
 {-| The kind of value, e.g. text, number, date -}
 type Kind
-  = Text { maximumLength : Maybe Int, default : Maybe String }
-  | Number { real : Bool, allowNegative : Bool, default : Maybe Float }
-  | Date { time : Bool, defaultIsNow : Bool }
+  = Text
+    { maximumLength : Maybe Int
+    , isEmail : Bool
+    , default : Maybe String
+    }
+  | Number
+    { real : Bool
+    , allowNegative : Bool
+    , default : Maybe Float
+    }
+  | Date
+    { time : Bool
+    , defaultIsNow : Bool
+    }
 
 {-| An individual attribute of a schema -}
 type alias Item =
@@ -95,8 +106,11 @@ tagsToKind tags =
         maximumLength =
           Dict.get "max" tags
           |> Maybe.andThen tagMaybeInt
+        
+        isEmail =
+          hasTag "email"
       in
-        Text { maximumLength = maximumLength, default = tagText "default" }
+        Text { maximumLength = maximumLength, isEmail = isEmail, default = tagText "default" }
 
 {-| Convert a Lofi.Element to a schema Item -}
 fromElement : Element -> Item

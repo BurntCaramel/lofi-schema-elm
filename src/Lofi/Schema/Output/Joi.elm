@@ -47,14 +47,20 @@ createSchemaCodeFold item list =
   let
     nativeKind =
       case item.kind of
-        Text { maximumLength } ->
+        Text { maximumLength, isEmail } ->
           let
+            emailSuffix =
+              if isEmail then
+                ".email()"
+              else
+                ""
+            
             maxSuffix =
               maximumLength
               |> Maybe.map (\n -> ".max(" ++ (toString n) ++ ")")
               |> Maybe.withDefault ""
           in
-          "Joi.string()" ++ maxSuffix
+          "Joi.string()" ++ emailSuffix ++ maxSuffix
         Number { real, allowNegative } ->
           "Joi.number()"
         Date { time } ->

@@ -10682,6 +10682,7 @@ var _user$project$Lofi_Schema$tagsToKind = function (tags) {
 				return _user$project$Lofi_Schema$Number(
 					{real: true, allowNegative: true, $default: $default});
 			} else {
+				var isEmail = hasTag('email');
 				var tagMaybeInt = function (tagValue) {
 					var _p2 = tagValue;
 					if (_p2.ctor === 'Content') {
@@ -10703,6 +10704,7 @@ var _user$project$Lofi_Schema$tagsToKind = function (tags) {
 				return _user$project$Lofi_Schema$Text(
 					{
 						maximumLength: maximumLength,
+						isEmail: isEmail,
 						$default: tagText('default')
 					});
 			}
@@ -10752,7 +10754,11 @@ var _user$project$Lofi_Schema_Output_Joi$createSchemaCodeFold = F2(
 										')'));
 							},
 							_p0._0.maximumLength));
-					return A2(_elm_lang$core$Basics_ops['++'], 'Joi.string()', maxSuffix);
+					var emailSuffix = _p0._0.isEmail ? '.email()' : '';
+					return A2(
+						_elm_lang$core$Basics_ops['++'],
+						'Joi.string()',
+						A2(_elm_lang$core$Basics_ops['++'], emailSuffix, maxSuffix));
 				case 'Number':
 					return 'Joi.number()';
 				default:
