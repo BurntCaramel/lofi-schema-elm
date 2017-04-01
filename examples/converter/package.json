@@ -1,0 +1,22 @@
+{
+  "name": "hard-coded",
+  "version": "1.0.0",
+  "description": "Describe hard-coded here",
+  "private": true,
+  "scripts": {
+    "build": "nwb build-web-app",
+    "clean": "nwb clean-app",
+    "start": "nwb serve-web-app --reload",
+    "test": "nwb test",
+    "test:coverage": "nwb test --coverage",
+    "test:watch": "nwb test --server"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "elm-webpack-loader": "^4.3.0",
+    "nwb": "0.15.x"
+  },
+  "author": "",
+  "license": "MIT",
+  "repository": ""
+}

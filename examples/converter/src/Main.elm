@@ -1,6 +1,6 @@
-module LofiSchemaExampleHardCoded exposing (main)
+module Main exposing (main)
 
-import Html exposing (Html, section, header, div, h1, h2, pre, textarea, text)
+import Html exposing (Html, section, header, article, div, h1, h2, pre, textarea, text)
 import Html.Attributes exposing (style, rows)
 import Html.Events exposing (onInput)
 import Lofi.Parse exposing (parseElement)
@@ -74,6 +74,7 @@ viewCode code =
   pre [
     style
       [ ("overflow", "auto")
+      , ("maxWidth", "none")
       , ("width", "calc(50vw + " ++ (toString (contentWidthEm / 2)) ++ "em)")
       ]
   ] [ text code ]
@@ -104,41 +105,39 @@ view model =
     [ header []
       [ h1 [] [ text "Write your #lofi schema:" ] ]
     {- , div [] (List.map (\line -> div [] [ text line ]) model.lines) -}
-    , div [] [
-      textarea
-      [ rows 1
-      , onInput ChangeCollectionName
-      , style [("width", "100%"), ("fontSize", "1rem"), ("resize", "none")]
-      ]
-      [ text model.collectionName
-      ]
-    ]
-    , div [] [
-      textarea
-      [ rows (List.length model.lines)
-      , onInput ChangeSchemaText
-      , style [("width", "100%"), ("fontSize", "1rem"), ("resize", "none")]
-      ]
-      [ text (String.join "\n" model.lines)
-      ]
-    ]
-    {-, div []
+    , div []
+        [ textarea
+          [ rows 1
+          , onInput ChangeCollectionName
+          , style [("width", "100%"), ("fontSize", "1rem"), ("resize", "none")]
+          ]
+          [ text model.collectionName
+          ]
+        , textarea
+          [ rows (List.length model.lines)
+          , onInput ChangeSchemaText
+          , style [("width", "100%"), ("fontSize", "1rem"), ("resize", "none")]
+          ]
+          [ text (String.join "\n" model.lines)
+          ]
+        ]
+    {-, article []
       [ h2 [] [ text "Raw" ]
       , viewSchema schema
       ]-}
-    , div []
+    , article []
       [ h2 [] [ text "React PropTypes" ]
       , viewCode (ReactProps.createPropTypesCode schema)
       ]
-    , div []
+    , article []
       [ h2 [] [ text "Mongoose" ]
       , viewCode (Mongoose.createModelCode schema)
       ]
-    , div []
+    , article []
       [ h2 [] [ text "Joi" ]
       , viewCode (Joi.createSchemaCode schema)
       ]
-    , div []
+    , article []
       [ h2 [] [ text "MySQL" ]
       , viewCode (MySQL.createTableCommand schema)
       , viewCode (MySQL.insertRowCommand schema)

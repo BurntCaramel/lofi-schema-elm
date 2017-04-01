@@ -1,9 +1,0 @@
-{
-  "scripts": {
-    "start": "chokidar '../../**/*.elm' -c 'elm make Main.elm' --initial",
-    "build": "elm make Main.elm --output elm.compiled.js"
-  },
-  "devDependencies": {
-    "chokidar-cli": "^1.2.0"
-  }
-}
