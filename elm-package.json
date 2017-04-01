@@ -10,7 +10,8 @@
         "Lofi.Schema",
         "Lofi.Schema.Output.MySQL",
         "Lofi.Schema.Output.Mongoose",
-        "Lofi.Schema.Output.Joi"
+        "Lofi.Schema.Output.Joi",
+        "Lofi.Schema.Output.ReactProps"
     ],
     "dependencies": {
         "RoyalIcing/lofi-elm": "3.0.0 <= v < 4.0.0",

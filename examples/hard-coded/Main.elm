@@ -8,6 +8,7 @@ import Lofi.Schema exposing (Schema, fromElement)
 import Lofi.Schema.Output.MySQL as MySQL
 import Lofi.Schema.Output.Mongoose as Mongoose
 import Lofi.Schema.Output.Joi as Joi
+import Lofi.Schema.Output.ReactProps as ReactProps
 
 
 type alias Model =
@@ -117,9 +118,8 @@ view model =
       , viewSchema schema
       ]-}
     , div []
-      [ h2 [] [ text "MySQL" ]
-      , viewCode (MySQL.createTableCommand schema)
-      , viewCode (MySQL.insertRowCommand schema)
+      [ h2 [] [ text "React PropTypes" ]
+      , viewCode (ReactProps.createPropTypesCode schema)
       ]
     , div []
       [ h2 [] [ text "Mongoose" ]
@@ -128,6 +128,11 @@ view model =
     , div []
       [ h2 [] [ text "Joi" ]
       , viewCode (Joi.createSchemaCode schema)
+      ]
+    , div []
+      [ h2 [] [ text "MySQL" ]
+      , viewCode (MySQL.createTableCommand schema)
+      , viewCode (MySQL.insertRowCommand schema)
       ]
     ]
 
