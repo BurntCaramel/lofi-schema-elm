@@ -5,7 +5,8 @@ import Html.Attributes exposing (style, rows)
 import Html.Events exposing (onInput)
 import Lofi.Parse exposing (parseElement)
 import Lofi.Schema exposing (Schema, fromElement)
-import Lofi.Schema.Output.MySQL exposing (createTableCommand, insertRowCommand)
+import Lofi.Schema.Output.MySQL as MySQL
+import Lofi.Schema.Output.Mongoose as Mongoose
 
 
 type alias Model =
@@ -101,17 +102,16 @@ view model =
       ]-}
     , div []
       [ h2 [] [ text "MySQL" ]
-      , viewCode (createTableCommand schema)
-      , viewCode (insertRowCommand schema)
+      , viewCode (MySQL.createTableCommand schema)
+      , viewCode (MySQL.insertRowCommand schema)
       ]
     , div []
       [ h2 [] [ text "Mongoose" ]
-      , viewCode (createTableCommand schema)
-      , viewCode (insertRowCommand schema)
+      , viewCode (Mongoose.createModelCode schema)
       ]
     , div []
       [ h2 [] [ text "Joi" ]
-      , viewCode (createTableCommand schema)
+      , viewCode (MySQL.createTableCommand schema)
       ]
     ]
 

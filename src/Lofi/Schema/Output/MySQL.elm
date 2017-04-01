@@ -91,4 +91,4 @@ insertRowCommand schema =
     tableName =
       underscored schema.collectionName      
   in
-    "INSERT INTO " ++ tableName ++ " (\n  " ++ columnNames ++ "\n) VALUES (" ++ values ++ " );"
+    "INSERT INTO " ++ tableName ++ " (\n  " ++ columnNames ++ "\n) VALUES (" ++ values ++ ");"
