@@ -10889,7 +10889,7 @@ var _user$project$Lofi_Schema_Output_Mongoose$createModelCodeFold = F2(
 						function ($default) {
 							return {
 								ctor: '_Tuple2',
-								_0: 'default,',
+								_0: 'default',
 								_1: _elm_lang$core$Basics$toString($default)
 							};
 						},
@@ -11126,6 +11126,106 @@ var _user$project$Lofi_Schema_Output_MySQL$createTableCommand = function (schema
 				' (\n  ',
 				A2(_elm_lang$core$Basics_ops['++'], fields, '\n);'))));
 };
+var _user$project$Lofi_Schema_Output_ReactProps$pairsToJSObject = F2(
+	function (multilined, pairs) {
+		var wrapInBraces = multilined ? function (s) {
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				'{\n  ',
+				A2(_elm_lang$core$Basics_ops['++'], s, '\n}'));
+		} : function (s) {
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				'{ ',
+				A2(_elm_lang$core$Basics_ops['++'], s, ' }'));
+		};
+		var propertyDivider = multilined ? ',\n  ' : ', ';
+		return wrapInBraces(
+			A2(
+				_elm_lang$core$String$join,
+				propertyDivider,
+				A2(
+					_elm_lang$core$List$map,
+					function (_p0) {
+						var _p1 = _p0;
+						return A2(
+							_elm_lang$core$Basics_ops['++'],
+							_p1._0,
+							A2(_elm_lang$core$Basics_ops['++'], ': ', _p1._1));
+					},
+					pairs)));
+	});
+var _user$project$Lofi_Schema_Output_ReactProps$lowerCamelCase = function (input) {
+	var _p2 = _elm_lang$core$String$uncons(
+		_elm_community$string_extra$String_Extra$camelize(input));
+	if (_p2.ctor === 'Just') {
+		return A2(
+			_elm_lang$core$String$cons,
+			_elm_lang$core$Char$toLower(_p2._0._0),
+			_p2._0._1);
+	} else {
+		return '';
+	}
+};
+var _user$project$Lofi_Schema_Output_ReactProps$createPropTypesCodeFold = F2(
+	function (item, list) {
+		var priority = item.isPrimaryKey ? 2 : 1;
+		var requiredString = item.optional ? _elm_lang$core$Maybe$Nothing : _elm_lang$core$Maybe$Just('.isRequired');
+		var propertyName = _user$project$Lofi_Schema_Output_ReactProps$lowerCamelCase(item.name);
+		var nativeKind = function () {
+			var _p3 = item.kind;
+			switch (_p3.ctor) {
+				case 'Text':
+					return 'PropTypes.string';
+				case 'Number':
+					return 'PropTypes.number';
+				default:
+					return 'PropTypes.instanceOf(Date)';
+			}
+		}();
+		var schemaString = A2(
+			_elm_lang$core$String$join,
+			'',
+			A2(
+				_elm_lang$core$List$filterMap,
+				_elm_lang$core$Basics$identity,
+				{
+					ctor: '::',
+					_0: _elm_lang$core$Maybe$Just(nativeKind),
+					_1: {
+						ctor: '::',
+						_0: requiredString,
+						_1: {ctor: '[]'}
+					}
+				}));
+		var field = {ctor: '_Tuple2', _0: propertyName, _1: schemaString};
+		return {
+			ctor: '::',
+			_0: {ctor: '_Tuple2', _0: priority, _1: field},
+			_1: list
+		};
+	});
+var _user$project$Lofi_Schema_Output_ReactProps$createPropTypesCode = function (schema) {
+	var fields = A2(
+		_user$project$Lofi_Schema_Output_ReactProps$pairsToJSObject,
+		true,
+		A2(
+			_elm_lang$core$List$map,
+			_elm_lang$core$Tuple$second,
+			A2(
+				_elm_lang$core$List$sortBy,
+				_elm_lang$core$Tuple$first,
+				A3(
+					_elm_lang$core$List$foldr,
+					_user$project$Lofi_Schema_Output_ReactProps$createPropTypesCodeFold,
+					{ctor: '[]'},
+					schema.items))));
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		'propTypes = ',
+		A2(_elm_lang$core$Basics_ops['++'], fields, ';'));
+};
+var _user$project$LofiSchemaExampleHardCoded$contentWidthEm = 30;
 var _user$project$LofiSchemaExampleHardCoded$viewCode = function (code) {
 	return A2(
 		_elm_lang$html$Html$pre,
@@ -11135,7 +11235,21 @@ var _user$project$LofiSchemaExampleHardCoded$viewCode = function (code) {
 				{
 					ctor: '::',
 					_0: {ctor: '_Tuple2', _0: 'overflow', _1: 'auto'},
-					_1: {ctor: '[]'}
+					_1: {
+						ctor: '::',
+						_0: {
+							ctor: '_Tuple2',
+							_0: 'width',
+							_1: A2(
+								_elm_lang$core$Basics_ops['++'],
+								'calc(50vw + ',
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									_elm_lang$core$Basics$toString(_user$project$LofiSchemaExampleHardCoded$contentWidthEm / 2),
+									'em)'))
+						},
+						_1: {ctor: '[]'}
+					}
 				}),
 			_1: {ctor: '[]'}
 		},
@@ -11274,7 +11388,14 @@ var _user$project$LofiSchemaExampleHardCoded$view = function (model) {
 			_0: _elm_lang$html$Html_Attributes$style(
 				{
 					ctor: '::',
-					_0: {ctor: '_Tuple2', _0: 'maxWidth', _1: '30em'},
+					_0: {
+						ctor: '_Tuple2',
+						_0: 'maxWidth',
+						_1: A2(
+							_elm_lang$core$Basics_ops['++'],
+							_elm_lang$core$Basics$toString(_user$project$LofiSchemaExampleHardCoded$contentWidthEm),
+							'em')
+					},
 					_1: {
 						ctor: '::',
 						_0: {ctor: '_Tuple2', _0: 'margin', _1: 'auto'},
@@ -11398,19 +11519,14 @@ var _user$project$LofiSchemaExampleHardCoded$view = function (model) {
 									{ctor: '[]'},
 									{
 										ctor: '::',
-										_0: _elm_lang$html$Html$text('MySQL'),
+										_0: _elm_lang$html$Html$text('React PropTypes'),
 										_1: {ctor: '[]'}
 									}),
 								_1: {
 									ctor: '::',
 									_0: _user$project$LofiSchemaExampleHardCoded$viewCode(
-										_user$project$Lofi_Schema_Output_MySQL$createTableCommand(schema)),
-									_1: {
-										ctor: '::',
-										_0: _user$project$LofiSchemaExampleHardCoded$viewCode(
-											_user$project$Lofi_Schema_Output_MySQL$insertRowCommand(schema)),
-										_1: {ctor: '[]'}
-									}
+										_user$project$Lofi_Schema_Output_ReactProps$createPropTypesCode(schema)),
+									_1: {ctor: '[]'}
 								}
 							}),
 						_1: {
@@ -11457,7 +11573,35 @@ var _user$project$LofiSchemaExampleHardCoded$view = function (model) {
 											_1: {ctor: '[]'}
 										}
 									}),
-								_1: {ctor: '[]'}
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$div,
+										{ctor: '[]'},
+										{
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$h2,
+												{ctor: '[]'},
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html$text('MySQL'),
+													_1: {ctor: '[]'}
+												}),
+											_1: {
+												ctor: '::',
+												_0: _user$project$LofiSchemaExampleHardCoded$viewCode(
+													_user$project$Lofi_Schema_Output_MySQL$createTableCommand(schema)),
+												_1: {
+													ctor: '::',
+													_0: _user$project$LofiSchemaExampleHardCoded$viewCode(
+														_user$project$Lofi_Schema_Output_MySQL$insertRowCommand(schema)),
+													_1: {ctor: '[]'}
+												}
+											}
+										}),
+									_1: {ctor: '[]'}
+								}
 							}
 						}
 					}

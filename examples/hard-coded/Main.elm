@@ -66,10 +66,16 @@ viewSchema schema =
   div []
   (List.map viewSchemaItemRaw schema.items)
 
+contentWidthEm : Float
+contentWidthEm = 30
+
 viewCode : String -> Html Msg
 viewCode code =
   pre [
-    style [ ("overflow", "auto") ]
+    style
+      [ ("overflow", "auto")
+      , ("width", "calc(50vw + " ++ (toString (contentWidthEm / 2)) ++ "em)")
+      ]
   ] [ text code ]
 
 view : Model -> Html Msg
@@ -90,7 +96,10 @@ view model =
       }
   in
     section [
-      style [("maxWidth", "30em"), ("margin", "auto")]
+      style
+        [ ("maxWidth", (toString contentWidthEm) ++ "em")
+        , ("margin", "auto")
+        ]
     ]
     [ header []
       [ h1 [] [ text "Write your #lofi schema:" ] ]
