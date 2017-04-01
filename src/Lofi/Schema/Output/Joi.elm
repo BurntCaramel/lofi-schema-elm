@@ -48,7 +48,13 @@ createSchemaCodeFold item list =
     nativeKind =
       case item.kind of
         Text { maximumLength } ->
-          "Joi.string()"
+          let
+            maxSuffix =
+              maximumLength
+              |> Maybe.map (\n -> ".max(" ++ (toString n) ++ ")")
+              |> Maybe.withDefault ""
+          in
+          "Joi.string()" ++ maxSuffix
         Number { real, allowNegative } ->
           "Joi.number()"
         Date { time } ->
@@ -59,15 +65,14 @@ createSchemaCodeFold item list =
 
     requiredString =
       if item.optional then
-        Just ".optional()"
+        ".optional()"
       else
-        Just ".required()"
+        ".required()"
     
     schemaString =
-      [ Just nativeKind
+      [ nativeKind
       , requiredString
       ]
-      |> List.filterMap identity
       |> String.join ""
 
     field =

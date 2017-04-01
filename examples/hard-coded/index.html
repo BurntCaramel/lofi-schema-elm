@@ -10731,13 +10731,28 @@ var _user$project$Lofi_Schema$addElements = F2(
 var _user$project$Lofi_Schema_Output_Joi$createSchemaCodeFold = F2(
 	function (item, list) {
 		var priority = item.isPrimaryKey ? 2 : 1;
-		var requiredString = item.optional ? _elm_lang$core$Maybe$Just('.optional()') : _elm_lang$core$Maybe$Just('.required()');
+		var requiredString = item.optional ? '.optional()' : '.required()';
 		var propertyName = _elm_community$string_extra$String_Extra$underscored(item.name);
 		var nativeKind = function () {
 			var _p0 = item.kind;
 			switch (_p0.ctor) {
 				case 'Text':
-					return 'Joi.string()';
+					var maxSuffix = A2(
+						_elm_lang$core$Maybe$withDefault,
+						'',
+						A2(
+							_elm_lang$core$Maybe$map,
+							function (n) {
+								return A2(
+									_elm_lang$core$Basics_ops['++'],
+									'.max(',
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										_elm_lang$core$Basics$toString(n),
+										')'));
+							},
+							_p0._0.maximumLength));
+					return A2(_elm_lang$core$Basics_ops['++'], 'Joi.string()', maxSuffix);
 				case 'Number':
 					return 'Joi.number()';
 				default:
@@ -10747,18 +10762,15 @@ var _user$project$Lofi_Schema_Output_Joi$createSchemaCodeFold = F2(
 		var schemaString = A2(
 			_elm_lang$core$String$join,
 			'',
-			A2(
-				_elm_lang$core$List$filterMap,
-				_elm_lang$core$Basics$identity,
-				{
+			{
+				ctor: '::',
+				_0: nativeKind,
+				_1: {
 					ctor: '::',
-					_0: _elm_lang$core$Maybe$Just(nativeKind),
-					_1: {
-						ctor: '::',
-						_0: requiredString,
-						_1: {ctor: '[]'}
-					}
-				}));
+					_0: requiredString,
+					_1: {ctor: '[]'}
+				}
+			});
 		var field = {ctor: '_Tuple2', _0: propertyName, _1: schemaString};
 		return {
 			ctor: '::',
