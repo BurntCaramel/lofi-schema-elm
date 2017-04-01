@@ -30,11 +30,17 @@ model =
 
 type Msg
   = AddItem
+  | ChangeCollectionName String
   | ChangeSchemaText String
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
   case msg of
+    ChangeCollectionName newName ->
+      ( { model | collectionName = newName }
+      , Cmd.none
+      )
+    
     ChangeSchemaText text ->
       ( { model | lines = String.split "\n" text }
       , Cmd.none
@@ -85,13 +91,22 @@ view model =
       style [("maxWidth", "30em"), ("margin", "auto")]
     ]
     [ header []
-      [ h1 [] [ text "schema.lofi.design" ] ]
+      [ h1 [] [ text "Write your #lofi schema:" ] ]
     {- , div [] (List.map (\line -> div [] [ text line ]) model.lines) -}
+    , div [] [
+      textarea
+      [ rows 1
+      , onInput ChangeCollectionName
+      , style [("width", "100%"), ("fontSize", "1rem"), ("resize", "none")]
+      ]
+      [ text model.collectionName
+      ]
+    ]
     , div [] [
       textarea
       [ rows (List.length model.lines)
       , onInput ChangeSchemaText
-      , style [("width", "100%"), ("fontSize", "1rem")]
+      , style [("width", "100%"), ("fontSize", "1rem"), ("resize", "none")]
       ]
       [ text (String.join "\n" model.lines)
       ]
