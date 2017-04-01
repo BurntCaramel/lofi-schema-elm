@@ -68,7 +68,7 @@ createModelCodeFold item list =
         Text { default } ->
           Maybe.map (\default -> ("default", (quote default))) default
         Number { default } ->
-          Maybe.map (\default -> ("default,", (toString default))) default
+          Maybe.map (\default -> ("default", (toString default))) default
         Date { time, defaultIsNow } ->
           if time && defaultIsNow then
             Just ("default", "Date.now")
