@@ -10,6 +10,7 @@ import Lofi.Schema.Output.Mongoose as Mongoose
 import Lofi.Schema.Output.Joi as Joi
 import Lofi.Schema.Output.ReactProps as ReactProps
 import Lofi.Schema.Output.Swift as Swift
+import Lofi.Schema.Output.Elm as Elm
 
 
 type alias Model =
@@ -153,12 +154,16 @@ view model =
       , viewCode (Mongoose.createModelCode schema)
       ]
     , article []
-      [ h2 [] [ text "Joi" ]
-      , viewCode (Joi.createSchemaCode schema)
-      ]
-    , article []
       [ h2 [] [ text "Swift" ]
       , viewCode (Swift.createStructCode schema)
+      ]
+    , article []
+      [ h2 [] [ text "Elm" ]
+      , viewCode (Elm.createTypeAliasCode schema)
+      ]
+    , article []
+      [ h2 [] [ text "Joi" ]
+      , viewCode (Joi.createSchemaCode schema)
       ]
     , article []
       [ h2 [] [ text "MySQL" ]

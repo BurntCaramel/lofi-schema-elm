@@ -9,21 +9,11 @@ module Lofi.Schema.Output.Swift exposing
 -}
 
 import Lofi.Schema exposing (Schema, Item, Kind(..))
-import Char as Char
-import String.Extra exposing (underscored, camelize, quote)
+import String.Extra exposing (underscored, camelize, decapitalize, quote)
 
 
-lowerCamelCase : String -> String
-lowerCamelCase input =
-  case
-    input
-    |> camelize
-    |> String.uncons
-  of
-    Just (c, r) ->
-      String.cons (Char.toLower c) r
-    Nothing ->
-      ""
+lowerCamelize : String -> String
+lowerCamelize = camelize >> decapitalize
 
 pairsToStruct : String -> List (String, String) -> String
 pairsToStruct name pairs =
@@ -55,7 +45,7 @@ createStructPropertiesCodeFold item list =
           "Date"
     
     propertyName =
-      lowerCamelCase item.name
+      lowerCamelize item.name
 
     requiredString =
       if item.optional then
