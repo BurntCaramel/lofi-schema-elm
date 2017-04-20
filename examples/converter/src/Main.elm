@@ -9,6 +9,7 @@ import Lofi.Schema.Output.MySQL as MySQL
 import Lofi.Schema.Output.Mongoose as Mongoose
 import Lofi.Schema.Output.Joi as Joi
 import Lofi.Schema.Output.ReactProps as ReactProps
+import Lofi.Schema.Output.Swift as Swift
 
 
 type alias Model =
@@ -136,6 +137,10 @@ view model =
     , article []
       [ h2 [] [ text "Joi" ]
       , viewCode (Joi.createSchemaCode schema)
+      ]
+    , article []
+      [ h2 [] [ text "Swift" ]
+      , viewCode (Swift.createStructCode schema)
       ]
     , article []
       [ h2 [] [ text "MySQL" ]
