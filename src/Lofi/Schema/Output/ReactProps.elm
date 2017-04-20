@@ -9,21 +9,11 @@ module Lofi.Schema.Output.ReactProps exposing
 -}
 
 import Lofi.Schema exposing (Schema, Item, Kind(..))
-import Char as Char
-import String.Extra exposing (underscored, camelize, quote)
+import String.Extra exposing (underscored, camelize, classify, decapitalize, quote)
 
 
-lowerCamelCase : String -> String
-lowerCamelCase input =
-  case
-    input
-    |> camelize
-    |> String.uncons
-  of
-    Just (c, r) ->
-      String.cons (Char.toLower c) r
-    Nothing ->
-      ""
+lowerCamelize : String -> String
+lowerCamelize = camelize >> decapitalize
 
 pairsToJSObject : Bool -> List (String, String) -> String
 pairsToJSObject multilined pairs =
@@ -55,7 +45,7 @@ createPropTypesCodeFold item list =
           "PropTypes.instanceOf(Date)"
     
     propertyName =
-      lowerCamelCase item.name
+      lowerCamelize item.name
 
     requiredString =
       if item.optional then
@@ -91,5 +81,9 @@ createPropTypesCode schema =
       |> List.sortBy Tuple.first
       |> List.map Tuple.second
       |> pairsToJSObject True
+    
+    componentName =
+      schema.individualName
+      |> classify
   in
-    "propTypes = " ++ fields ++ ";"
+    componentName ++ ".propTypes = " ++ fields ++ ";"

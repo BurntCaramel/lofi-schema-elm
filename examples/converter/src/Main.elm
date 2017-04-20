@@ -1,7 +1,7 @@
 module Main exposing (main)
 
 import Html exposing (Html, section, header, article, div, h1, h2, pre, textarea, text)
-import Html.Attributes exposing (style, rows)
+import Html.Attributes exposing (style, rows, placeholder)
 import Html.Events exposing (onInput)
 import Lofi.Parse exposing (parseElement)
 import Lofi.Schema exposing (Schema, fromElement)
@@ -14,12 +14,14 @@ import Lofi.Schema.Output.Swift as Swift
 
 type alias Model =
   { collectionName : String
+  , individualName : String
   , lines : List String
   }
 
 model : Model
 model =
   { collectionName = "Users"
+  , individualName = "User"
   , lines =
       [ "First name"
       , "Middle name #optional"
@@ -34,6 +36,7 @@ model =
 type Msg
   = AddItem
   | ChangeCollectionName String
+  | ChangeIndividualName String
   | ChangeSchemaText String
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -41,6 +44,11 @@ update msg model =
   case msg of
     ChangeCollectionName newName ->
       ( { model | collectionName = newName }
+      , Cmd.none
+      )
+    
+    ChangeIndividualName newName ->
+      ( { model | individualName = newName }
       , Cmd.none
       )
     
@@ -94,6 +102,7 @@ view model =
     schema : Schema
     schema =
       { collectionName = model.collectionName
+      , individualName = model.individualName
       , items = List.map fromElement elements
       }
   in
@@ -109,8 +118,17 @@ view model =
     , div []
         [ textarea
           [ rows 1
+          , placeholder "Individual name"
+          , onInput ChangeIndividualName
+          , style [("width", "49.5%"), ("marginRight", "1%"), ("fontSize", "1rem"), ("resize", "none")]
+          ]
+          [ text model.individualName
+          ]
+        , textarea
+          [ rows 1
+          , placeholder "Collection name"
           , onInput ChangeCollectionName
-          , style [("width", "100%"), ("fontSize", "1rem"), ("resize", "none")]
+          , style [("width", "49.5%"), ("fontSize", "1rem"), ("resize", "none")]
           ]
           [ text model.collectionName
           ]

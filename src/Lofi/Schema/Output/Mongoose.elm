@@ -9,21 +9,11 @@ module Lofi.Schema.Output.Mongoose exposing
 -}
 
 import Lofi.Schema exposing (Schema, Item, Kind(..))
-import Char as Char
-import String.Extra exposing (underscored, camelize, quote)
+import String.Extra exposing (underscored, camelize, decapitalize, quote)
 
 
-lowerCamelCase : String -> String
-lowerCamelCase input =
-  case
-    input
-    |> camelize
-    |> String.uncons
-  of
-    Just (c, r) ->
-      String.cons (Char.toLower c) r
-    Nothing ->
-      ""
+lowerCamelize : String -> String
+lowerCamelize = camelize >> decapitalize
 
 pairsToJSObject : Bool -> List (String, String) -> String
 pairsToJSObject multilined pairs =
@@ -98,7 +88,7 @@ createModelCode schema =
   let
     constantName =
       schema.collectionName ++ "_schema"
-      |> lowerCamelCase
+      |> lowerCamelize
 
     fields =
       List.foldr createModelCodeFold [] schema.items
@@ -108,7 +98,7 @@ createModelCode schema =
     
     schemaOptions =
       pairsToJSObject True
-        [ ("collection", schema.collectionName |> lowerCamelCase |> quote )
+        [ ("collection", schema.collectionName |> lowerCamelize |> quote )
         ]
   in
     "const " ++ constantName ++ " = " ++

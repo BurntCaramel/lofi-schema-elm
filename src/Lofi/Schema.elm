@@ -45,6 +45,7 @@ type alias Item =
 {-| A representation of a model and its names and kinds -}
 type alias Schema =
   { collectionName : String
+  , individualName : String
   , items : List Item
   }
 

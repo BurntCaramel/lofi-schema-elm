@@ -90,6 +90,6 @@ createStructCode schema =
       List.foldr createStructPropertiesCodeFold [] schema.items
       |> List.sortBy Tuple.first
       |> List.map Tuple.second
-      |> pairsToStruct (camelize schema.collectionName)
+      |> pairsToStruct (camelize schema.individualName)
   in
     structCode
