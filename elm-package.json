@@ -1,7 +1,7 @@
 {
     "version": "1.0.0",
     "summary": "Declare schemas with a friendly syntax and convert",
-    "repository": "https://github.com/user/project.git",
+    "repository": "https://github.com/RoyalIcing/lofi-schema-elm.git",
     "license": "BSD3",
     "source-directories": [
         "src"
