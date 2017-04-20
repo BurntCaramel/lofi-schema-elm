@@ -13,7 +13,8 @@
         "Lofi.Schema.Output.Joi",
         "Lofi.Schema.Output.ReactProps",
         "Lofi.Schema.Output.Swift",
-        "Lofi.Schema.Output.Elm"
+        "Lofi.Schema.Output.Elm",
+        "Lofi.Schema.Output.Go"
     ],
     "dependencies": {
         "RoyalIcing/lofi-elm": "3.0.0 <= v < 4.0.0",

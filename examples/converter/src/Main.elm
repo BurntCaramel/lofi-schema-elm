@@ -11,6 +11,7 @@ import Lofi.Schema.Output.Joi as Joi
 import Lofi.Schema.Output.ReactProps as ReactProps
 import Lofi.Schema.Output.Swift as Swift
 import Lofi.Schema.Output.Elm as Elm
+import Lofi.Schema.Output.Go as Go
 
 
 type alias Model =
@@ -160,6 +161,10 @@ view model =
     , article []
       [ h2 [] [ text "Elm" ]
       , viewCode (Elm.createTypeAliasCode schema)
+      ]
+    , article []
+      [ h2 [] [ text "Golang" ]
+      , viewCode (Go.createStructCode schema)
       ]
     , article []
       [ h2 [] [ text "Joi" ]
