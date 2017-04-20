@@ -41,8 +41,11 @@ createStructPropertiesCodeFold item list =
           "String"
         Number _ ->
           "Double"
-        Date _ ->
-          "Date"
+        Date { time } ->
+          if time then
+            "Date"
+          else
+            "DateComponents"
     
     propertyName =
       lowerCamelize item.name
@@ -60,8 +63,11 @@ createStructPropertiesCodeFold item list =
         Number { default } ->
           Maybe.map (\default -> " = " ++ (toString default)) default
         Date { time, defaultIsNow } ->
-          if time && defaultIsNow then
-            Just " = Date()"
+          if defaultIsNow then
+            if time then
+              Just " = Date()"
+            else
+              Just " = DateComponents()"
           else
             Nothing
     
