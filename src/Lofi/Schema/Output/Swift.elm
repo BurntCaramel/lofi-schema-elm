@@ -53,9 +53,22 @@ createStructPropertiesCodeFold item list =
       else
         Nothing
     
+    defaultValue =
+      case item.kind of
+        Text { default } ->
+          Maybe.map (\default -> " = " ++ (quote default)) default
+        Number { default } ->
+          Maybe.map (\default -> " = " ++ (toString default)) default
+        Date { time, defaultIsNow } ->
+          if time && defaultIsNow then
+            Just " = Date()"
+          else
+            Nothing
+    
     schemaString =
       [ Just nativeKind
       , requiredString
+      , defaultValue
       ]
       |> List.filterMap identity
       |> String.join ""
