@@ -59,9 +59,9 @@ createStructPropertiesCodeFold item list =
 
     requiredString =
       if item.optional then
-        Nothing
-      else
         Just "?"
+      else
+        Nothing
     
     schemaString =
       [ Just nativeKind
