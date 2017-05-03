@@ -19,11 +19,18 @@ createTableCommandFold item list =
     nativeKind =
       case item.kind of
         Text { maximumLength } ->
-          "TEXT"
+          case maximumLength of
+            Just maximumLength ->
+              "VARCHAR(" ++ (toString maximumLength) ++ ")"
+            Nothing ->
+              "TEXT"
         Number { real, allowNegative } ->
-          "BIGINT"
+          "DOUBLE"
         Date { time } ->
-          "DATE"
+          if time then
+            "DATETIME" -- See: http://stackoverflow.com/questions/3928275/in-ruby-on-rails-whats-the-difference-between-datetime-timestamp-time-and-da
+          else
+            "DATE"
     
     columnName =
       underscored item.name
