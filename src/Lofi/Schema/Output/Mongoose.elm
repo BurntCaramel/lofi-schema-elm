@@ -87,7 +87,7 @@ createModelCode : Schema -> String
 createModelCode schema =
   let
     constantName =
-      schema.collectionName ++ "_schema"
+      schema.individualName ++ "_schema"
       |> lowerCamelize
 
     fields =
