@@ -1,3 +1,14 @@
-# hard-coded
+# Converts Lofi Schemas to various programming language types.
 
-Describe hard-coded here.
+## Installation
+
+```
+elm package install
+yarn install
+```
+
+## Running
+
+```
+yarn start
+```
