@@ -12,6 +12,7 @@ import Lofi.Schema.Output.ReactProps as ReactProps
 import Lofi.Schema.Output.Swift as Swift
 import Lofi.Schema.Output.Elm as Elm
 import Lofi.Schema.Output.Go as Go
+import Lofi.Schema.Output.Julia as Julia
 
 
 type alias Model =
@@ -48,12 +49,12 @@ update msg model =
       ( { model | collectionName = newName }
       , Cmd.none
       )
-    
+
     ChangeIndividualName newName ->
       ( { model | individualName = newName }
       , Cmd.none
       )
-    
+
     ChangeSchemaText text ->
       ( { model | lines = String.split "\n" text }
       , Cmd.none
@@ -174,6 +175,10 @@ view model =
       [ h2 [] [ text "MySQL" ]
       , viewCode (MySQL.createTableCommand schema)
       , viewCode (MySQL.insertRowCommand schema)
+      ]
+    , article []
+      [ h2 [] [ text "Julia (v0.6+)" ]
+      , viewCode (Julia.createStructCode schema)
       ]
     ]
 
