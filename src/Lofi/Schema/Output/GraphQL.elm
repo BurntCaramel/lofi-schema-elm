@@ -26,7 +26,7 @@ pairsToObject name pairs =
   
     innerCode =
       pairs
-      |> List.map (\(a, b) -> "var " ++ a ++ ": " ++ b)
+      |> List.map (\(a, b) -> a ++ ": " ++ b)
       |> String.join propertyDivider
       |> wrapInBraces
   in
