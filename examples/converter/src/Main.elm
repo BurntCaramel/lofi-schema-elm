@@ -13,6 +13,7 @@ import Lofi.Schema.Output.Swift as Swift
 import Lofi.Schema.Output.Elm as Elm
 import Lofi.Schema.Output.Go as Go
 import Lofi.Schema.Output.Julia as Julia
+import Lofi.Schema.Output.GraphQL as GraphQL
 
 
 type alias Model =
@@ -147,6 +148,10 @@ view model =
       [ h2 [] [ text "Raw" ]
       , viewSchema schema
       ]-}
+    , article []
+      [ h2 [] [ text "GraphQL" ]
+      , viewCode (GraphQL.createObjectCode schema)
+      ]
     , article []
       [ h2 [] [ text "React PropTypes" ]
       , viewCode (ReactProps.createPropTypesCode schema)

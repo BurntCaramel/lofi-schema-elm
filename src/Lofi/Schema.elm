@@ -25,9 +25,10 @@ type Kind
     , default : Maybe String
     }
   | Number
-    { real : Bool
-    , allowNegative : Bool
+    { real : Bool -- TODO?: change to quantity : Bool
+    , allowNegative : Bool -- TODO: change to min : Maybe Float
     , default : Maybe Float
+    -- TODO?: Add defaultInt : Int
     }
   | Date
     { time : Bool
