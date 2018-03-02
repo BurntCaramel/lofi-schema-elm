@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import sade from 'sade'
 import * as FS from 'fs'
 import { extname } from 'path'

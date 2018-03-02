@@ -1,18 +1,22 @@
 {
   "name": "lofi-schema",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Convert schemas into code",
-  "main": "dist/module/lofi-schema.js",
+  "main": "lib/module/lofi-schema.js",
   "bin": {
-    "lofi-schema": "dist/cli/lofi-schema"
+    "lofi-schema": "lib/cli/lofi-schema.js"
   },
+  "files": [
+    "lib",
+    "README.md"
+  ],
   "repository": "https://github.com/RoyalIcing/lofi-schema-elm.git",
   "author": "Patrick Smith <patrick@burntcaramel.com>",
   "license": "BSD3",
   "scripts": {
-    "build:elm": "elm-make src/Main.elm --output dist/main.js",
-    "build:js:module": "microbundle -i src/index.ts -o dist/module -f cjs --no-compress --target node",
-    "build:js:cli": "microbundle -i src/cli.ts -o dist/cli -f cjs --no-compress --target node",
+    "build:elm": "elm-make src/Main.elm --output lib/main.js",
+    "build:js:module": "microbundle -i src/index.ts -o lib/module -f cjs --no-compress --target node",
+    "build:js:cli": "microbundle -i src/cli.ts -o lib/cli -f cjs --no-compress --target node",
     "build:js": "npm run build:js:module && npm run build:js:cli",
     "build": "npm run build:elm && npm run build:js"
   },
