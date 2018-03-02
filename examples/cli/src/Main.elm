@@ -17,34 +17,49 @@ import Lofi.Schema.Output.Go as Go
 import Lofi.Schema.Output.Julia as Julia
 
 
-port beginConversion : (String -> msg) -> Sub msg
+type alias ConversionRequest =
+    { collectionName : String
+    , individualName : String
+    , inputFormat : String
+    , input : String
+    , outputFormat : String
+    }
+
+type alias ConversionOutput =
+    { format : String
+    , errorMessage : Maybe String
+    , result: Maybe String
+    }
 
 
-port conversionComplete : ( String, Maybe String ) -> Cmd msg
+type ConversionError =
+    UnknownInputFormat String
+
+
+port beginConversion : (ConversionRequest -> msg) -> Sub msg
+
+
+port conversionComplete : ConversionOutput -> Cmd msg
 
 
 type alias Flags =
-    { collectionName : String
-    , individualName : String
-    , input : String
-    }
+    {}
 
 
 type alias Model =
-    { schema : Schema
-    }
+    {}
 
 
 type Msg
-    = BeginConversion String
+    = BeginConversion ConversionRequest
     | None
 
 
-init : Flags -> ( Model, Cmd Msg )
-init flags =
+requestToSchema : ConversionRequest -> Result ConversionError Schema
+requestToSchema request =
     let
         validLines =
-            flags.input
+            request.input
                 |> String.split "\n"
                 |> List.map String.trim
                 |> List.filter (\s -> String.length s > 0)
@@ -54,14 +69,17 @@ init flags =
 
         schema : Schema
         schema =
-            { collectionName = flags.collectionName
-            , individualName = flags.individualName
+            { collectionName = request.collectionName
+            , individualName = request.individualName
             , items = elements |> List.map Lofi.Schema.fromElement
             }
     in
-        { schema = schema
-        }
-            ! []
+        Ok schema
+
+
+init : Flags -> ( Model, Cmd Msg )
+init flags =
+    {} ! []
 
 
 conformFormat : String -> String
@@ -99,14 +117,18 @@ convertToFormat format schema =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        BeginConversion format ->
+        BeginConversion request ->
             let
                 output =
-                    model.schema
-                        |> convertToFormat format
+                    case requestToSchema request of
+                        Ok schema ->
+                            ConversionOutput request.outputFormat Nothing (convertToFormat request.outputFormat schema)
+                        
+                        Err error ->
+                            ConversionOutput request.outputFormat (Just <| toString error) Nothing
             in
                 model
-                    ! [ conversionComplete ( format, output )
+                    ! [ conversionComplete output
                       ]
 
         None ->

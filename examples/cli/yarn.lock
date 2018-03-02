@@ -2,6 +2,10 @@
 # yarn lockfile v1
 
 
+"@types/node@^9.4.6":
+  version "9.4.6"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-9.4.6.tgz#d8176d864ee48753d053783e4e463aec86b8d82e"
+
 acorn-dynamic-import@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/acorn-dynamic-import/-/acorn-dynamic-import-3.0.0.tgz#901ceee4c7faaef7e07ad2a47e890675da50a278"
@@ -1800,7 +1804,7 @@ rollup@^0.55.1:
   version "0.55.5"
   resolved "https://registry.yarnpkg.com/rollup/-/rollup-0.55.5.tgz#2f88c300f7cf24b5ec2dca8a6aba73b04e087e93"
 
-sade@^1.3.1:
+sade@^1.3.1, sade@^1.3.2:
   version "1.3.2"
   resolved "https://registry.yarnpkg.com/sade/-/sade-1.3.2.tgz#8eb8edf859709822f12176217de2bf5f85325c06"
   dependencies:

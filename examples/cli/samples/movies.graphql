@@ -1,0 +1,9 @@
+type Person {
+  name: String!
+}
+
+type Movie {
+  title: String!
+  yearReleased: Int
+  directors: [Person!]
+}

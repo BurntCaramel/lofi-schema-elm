@@ -1,5 +1,5 @@
 {
-    "version": "1.0.0",
+    "version": "0.1.0",
     "summary": "CLI to convert schemas into code",
     "repository": "https://github.com/RoyalIcing/lofi-schema-elm.git",
     "license": "BSD3",
